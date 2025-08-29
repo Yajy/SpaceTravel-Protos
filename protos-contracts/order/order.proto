@@ -1,0 +1,41 @@
+syntax = "proto3"
+
+package order.v1;
+
+option java_multiple_files = true;
+option java_package = "com.example.order.v1.grpc";
+
+message GetSeatAvailabilityRequest {
+  string flight_id = 1;
+  string seat_type = 2;
+}
+
+message GetSeatAvailabilityResponse {
+  string flight_id = 1;
+  string order_status = 2;
+  int32 price = 3; 
+}
+
+message MakePaymentRequest {
+  string status = 1;
+}
+message MakePaymentResponse {
+  string flight_name = 2;
+  string source_name = 3;
+  string destination_name = 4;
+  double price = 5;
+  int32 seat_no = 6; 
+  string created_at = 7;
+  string departure_date = 8;
+  string arrival_date = 9;
+  string departure_time = 10;
+  string arrival_time = 11;
+  string availability = 12;
+  string additional_info = 13;
+  int32 status = 14;
+}
+
+service OrderService {
+   rpc GetSeatAvailability(GetSeatAvailabilityRequest) returns (GetSeatAvailabilityResponse);
+   rpc MakePayment(MakePaymentRequest) returns (MakePaymentResponse);
+}
