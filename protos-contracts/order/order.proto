@@ -1,4 +1,4 @@
-syntax = "proto3"
+syntax = "proto3";
 
 package order.v1;
 
@@ -13,7 +13,7 @@ message GetSeatAvailabilityRequest {
 message GetSeatAvailabilityResponse {
   string flight_id = 1;
   string order_status = 2;
-  int32 price = 3; 
+  double price = 3; 
 }
 
 message MakePaymentRequest {
