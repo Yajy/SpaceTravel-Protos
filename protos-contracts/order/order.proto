@@ -5,6 +5,8 @@ package order.v1;
 option java_multiple_files = true;
 option java_package = "com.example.order.v1.grpc";
 
+import "google/protobuf/timestamp.proto";
+
 message GetSeatAvailabilityRequest {
   string flight_id = 1;
   string seat_type = 2;
@@ -12,14 +14,29 @@ message GetSeatAvailabilityRequest {
 
 message GetSeatAvailabilityResponse {
   string flight_id = 1;
-  string order_status = 2;
-  double price = 3; 
+  bool available = 2;
+  int32 available_seats = 3;
+  double price = 4;
+  string seat_type = 5;
 }
 
 message MakePaymentRequest {
-  string status = 1;
+  string flight_id = 1;
+  string seat_type = 2;
+  string passenger_id = 3;
+  double amount = 4;
+  string payment_method = 5;
+  string flight_name = 6;
+  string source_name = 7;
+  string destination_name = 8;
+  string departure_date = 9;
+  string arrival_date = 10;
+  string departure_time = 11;
+  string arrival_time = 12;
 }
+
 message MakePaymentResponse {
+  string order_id = 1;
   string flight_name = 2;
   string source_name = 3;
   string destination_name = 4;
@@ -30,9 +47,12 @@ message MakePaymentResponse {
   string arrival_date = 9;
   string departure_time = 10;
   string arrival_time = 11;
-  string availability = 12;
+  string seat_type = 12;
   string additional_info = 13;
-  int32 status = 14;
+  string payment_status = 14;
+  bool success = 15;
+  google.protobuf.Timestamp create_time = 16;
+  google.protobuf.Timestamp update_time = 17;
 }
 
 service OrderService {
