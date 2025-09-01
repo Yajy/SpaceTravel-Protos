@@ -7,19 +7,6 @@ option java_package = "com.example.order.v1.grpc";
 
 import "google/protobuf/timestamp.proto";
 
-message GetSeatAvailabilityRequest {
-  string flight_id = 1;
-  string seat_type = 2;
-}
-
-message GetSeatAvailabilityResponse {
-  string flight_id = 1;
-  bool available = 2;
-  int32 available_seats = 3;
-  double price = 4;
-  string seat_type = 5;
-}
-
 message MakePaymentRequest {
   string flight_id = 1;
   string seat_type = 2;
@@ -56,6 +43,5 @@ message MakePaymentResponse {
 }
 
 service OrderService {
-   rpc GetSeatAvailability(GetSeatAvailabilityRequest) returns (GetSeatAvailabilityResponse);
    rpc MakePayment(MakePaymentRequest) returns (MakePaymentResponse);
 }

@@ -76,6 +76,28 @@ message UpdateSeatsResponse {
     Flight flight = 1;
 }
 
+message LockSeatsRequest {
+    string flight_id = 1;
+    int32 seats_to_lock = 2;
+    string order_id = 3;
+}
+
+message LockSeatsResponse {
+    bool success = 1;
+    string message = 2;
+    string reservation_id = 3;
+}
+
+message PaymentStatusRequest {
+    string order_id = 1;
+    bool payment_success = 2;
+}
+
+message PaymentStatusResponse {
+    bool success = 1;
+    string message = 2;
+}
+
 service FlightService {
     rpc SearchFlights(SearchFlightsRequest) returns (SearchFlightsResponse);
     rpc GetFlightDetails(GetFlightDetailsRequest) returns (GetFlightDetailsResponse);
@@ -83,4 +105,7 @@ service FlightService {
     rpc CreateFlight(CreateFlightRequest) returns (CreateFlightResponse);
     rpc UpdateFlight(UpdateFlightRequest) returns (UpdateFlightResponse);
     rpc DeleteFlight(DeleteFlightRequest) returns (google.protobuf.Empty);
+    rpc UpdateSeats(UpdateSeatsRequest) returns (UpdateSeatsResponse);
+    rpc LockSeats(LockSeatsRequest) returns (LockSeatsResponse);
+    rpc UpdatePaymentStatus(PaymentStatusRequest) returns (PaymentStatusResponse);
 }
