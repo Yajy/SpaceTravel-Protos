@@ -23,6 +23,7 @@ message CreatePassengerRequest {
 message CreatePassengerResponse {
     bool success = 1;
     string error_message = 2;
+    string id = 3;
 }
 
 message AuthenticatePassengerRequest {

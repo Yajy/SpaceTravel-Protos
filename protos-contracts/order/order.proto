@@ -7,19 +7,40 @@ option java_package = "com.example.order.v1.grpc";
 
 import "google/protobuf/timestamp.proto";
 
+//current flow is all the fields will directly to order service and get saved in order db
+//getting called at /proceed endpoint
+message CreateOrderRequest {
+    string flight_id = 1;
+    string schedule_id = 2;
+    string passenger_id = 3;
+    int32 number_of_seats = 4;
+    string departure_date = 5;
+}
+
+//response coming back to bff from order service
+message CreateOrderResponse {
+    string order_id = 1;
+    string flight_id = 2;
+    string schedule_id = 3;
+    string passenger_id = 4;
+    int32 number_of_seats = 5;
+    double total_amount = 6;
+    string source_name = 7;
+    string destination_name = 8;
+    string departure_date = 9;
+    string arrival_date = 10;
+    string departure_time = 11;
+    string arrival_time = 12;
+    string order_status = 13;
+    bool success = 14;
+    string message = 15;
+}
+
 message MakePaymentRequest {
   string flight_id = 1;
-  string seat_type = 2;
+  string order_id = 2;
   string passenger_id = 3;
-  double amount = 4;
-  string payment_method = 5;
-  string flight_name = 6;
-  string source_name = 7;
-  string destination_name = 8;
-  string departure_date = 9;
-  string arrival_date = 10;
-  string departure_time = 11;
-  string arrival_time = 12;
+  string payment_method = 4;
 }
 
 message MakePaymentResponse {
@@ -28,20 +49,19 @@ message MakePaymentResponse {
   string source_name = 3;
   string destination_name = 4;
   double price = 5;
-  int32 seat_no = 6; 
-  string created_at = 7;
-  string departure_date = 8;
-  string arrival_date = 9;
-  string departure_time = 10;
-  string arrival_time = 11;
-  string seat_type = 12;
-  string additional_info = 13;
-  string payment_status = 14;
-  bool success = 15;
-  google.protobuf.Timestamp create_time = 16;
-  google.protobuf.Timestamp update_time = 17;
+  string created_at = 6;
+  string departure_date = 7;
+  string arrival_date = 8;
+  string departure_time = 9;
+  string arrival_time = 10;
+  string seat_type = 11;
+  string additional_info = 12;
+  string payment_status = 13;
+  bool success = 14;
+    string message = 15;
 }
 
 service OrderService {
-   rpc MakePayment(MakePaymentRequest) returns (MakePaymentResponse);
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc MakePayment(MakePaymentRequest) returns (MakePaymentResponse);
 }
