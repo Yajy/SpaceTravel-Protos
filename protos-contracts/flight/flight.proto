@@ -9,24 +9,25 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
 message Flight {
-    string id = 1;
+    string flight_id = 1;
     string flight_name = 2;
     string source_name = 3;
     string destination_name = 4;
     double price = 5;
-    int32 total_seats = 6;
-    int32 available_seats = 7;
-    string seat_type = 8;
-    string departure_date = 9;
-    string arrival_date = 10;
-    string departure_time = 11;
-    string arrival_time = 12;
-    string availability = 13;
-    string additional_info = 14;
-    int32 status = 15;
-    google.protobuf.Timestamp create_time = 16;
-    google.protobuf.Timestamp update_time = 17;
+    string seat_type = 6;
+    string additional_info = 7;
+    repeated Schedule schedules = 8;
 }
+
+message Schedule {
+    string schedule_id = 1;
+    int32 day_of_week = 2;
+    string departure_time = 3;
+    string arrival_time = 4;
+    int32 available_seats = 5;
+    string availability_status = 6;
+}
+
 
 message SearchFlightsRequest {
     string source_name = 1;
@@ -35,7 +36,8 @@ message SearchFlightsRequest {
 }
 
 message GetFlightDetailsRequest {
-    string flight_id = 1;
+    string schedule_id = 1;
+    string departure_date = 2;
 }
 
 message SearchFlightsResponse {
@@ -44,6 +46,8 @@ message SearchFlightsResponse {
 
 message GetFlightDetailsResponse {
     Flight flight = 1;
+    string message = 2;
+    string departure_date = 3;
 }
 
 message CreateFlightRequest {
@@ -54,46 +58,24 @@ message CreateFlightResponse {
     Flight flight = 1;
 }
 
-message UpdateFlightRequest {
-    string flight_id = 1;
-    Flight flight = 2;
-}
-
-message UpdateFlightResponse {
-    Flight flight = 1;
-}
-
-message DeleteFlightRequest {
-    string flight_id = 1;
-}
-
-message UpdateSeatsRequest {
-    string flight_id = 1;
-    int32 available_seats = 2;
-}
-
-message UpdateSeatsResponse {
-    Flight flight = 1;
-}
-
 message LockSeatsRequest {
     string flight_id = 1;
-    int32 seats_to_lock = 2;
-    string order_id = 3;
+    string schedule_id = 2;
+    int32 seats_to_lock = 3;
+    string order_id = 4;
 }
 
 message LockSeatsResponse {
     bool success = 1;
     string message = 2;
-    string reservation_id = 3;
 }
 
-message PaymentStatusRequest {
+message UpdatePaymentStatusRequest {
     string order_id = 1;
-    bool payment_success = 2;
+    bool payment_status = 2;
 }
 
-message PaymentStatusResponse {
+message UpdatePaymentStatusResponse {
     bool success = 1;
     string message = 2;
 }
@@ -101,11 +83,7 @@ message PaymentStatusResponse {
 service FlightService {
     rpc SearchFlights(SearchFlightsRequest) returns (SearchFlightsResponse);
     rpc GetFlightDetails(GetFlightDetailsRequest) returns (GetFlightDetailsResponse);
-
     rpc CreateFlight(CreateFlightRequest) returns (CreateFlightResponse);
-    rpc UpdateFlight(UpdateFlightRequest) returns (UpdateFlightResponse);
-    rpc DeleteFlight(DeleteFlightRequest) returns (google.protobuf.Empty);
-    rpc UpdateSeats(UpdateSeatsRequest) returns (UpdateSeatsResponse);
     rpc LockSeats(LockSeatsRequest) returns (LockSeatsResponse);
-    rpc UpdatePaymentStatus(PaymentStatusRequest) returns (PaymentStatusResponse);
+    rpc UpdatePaymentStatus(UpdatePaymentStatusRequest) returns (UpdatePaymentStatusResponse);
 }
